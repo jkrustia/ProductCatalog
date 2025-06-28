@@ -1,0 +1,1449 @@
+/* larger screen - go to RESPONSIVENESS section for media queries */
+
+@font-face {
+    /* sans-serif */
+    font-family: "Baloo";
+    src: url("/fonts/Baloo2-VariableFont.ttf") format("truetype");
+    font-style: normal;
+}
+
+@font-face {
+    /* sans-serif */
+    font-family: "Nunito";
+    src: url("/fonts/Nunito-VariableFont.ttf") format("truetype");
+    font-style: normal;
+}
+
+@font-face {
+    /* sans-serif */
+    font-family: "Quicksand";
+    src: url("/fonts/Quicksand-VariableFont.ttf") format("truetype");
+    font-style: normal;
+}
+
+:root {
+    --color-primary: #3b82f6; /* Warm Blue */
+    --color-secondary: #f87171; /* Soft Coral */
+    --color-background: #fffdf7; /* Cream White */
+    --color-text-primary: #374151; /* Dark Slate Gray */
+    --color-text-secondary: #6b7280; /* Cool Gray */
+    --color-accent: #34d399; /* Fresh Mint Green */
+    --color-border: #e5e7eb; /* Light Taupe */
+}
+
+* {
+    box-sizing: border-box;
+}
+
+nav {
+    background-color: var(--color-primary);
+    font-family: "Baloo", sans-serif;
+}
+
+nav a {
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+nav img {
+    width: 30px;
+}
+
+.left-col h1 {
+    font-family: "Baloo", sans-serif;
+    color: var(--color-secondary);
+    font-size: 1.175rem;
+    font-weight: bold;
+}
+
+.left-col p {
+    font-family: "Quicksand", sans-serif;
+    color: var(--color-text-primary);
+    font-size: 0.575rem;
+}
+
+.left-col a {
+    display: inline-block;
+    padding: 0.4rem 1.4rem;
+    background-color: var(--color-accent);
+    color: white;
+    text-decoration: none;
+    font-family: "Quicksand", sans-serif;
+    font-size: 0.675rem;
+    font-weight: bold;
+    border-radius: 1rem;
+}
+
+.right-col {
+    background-color: #add8e6;
+}
+
+.right-col img {
+    position: absolute;
+    top: 72%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 180px;
+    width: auto;
+}
+
+.row-under {
+    background-color: #f4a7b9;
+}
+
+.row-under p {
+    font-family: "Nunito", sans-serif;
+    color: var(--color-secondary);
+    font-size: 0.575rem;
+    padding: 10px 0;
+}
+
+.know-us {
+    background-image: url("/images/know_us.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.know-us h2 {
+    font-family: "Baloo", sans-serif;
+    color: var(--color-primary);
+    text-transform: uppercase;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.know-us span {
+    color: var(--color-background);
+}
+
+.know-us p {
+    font-family: "Nunito", sans-serif;
+    color: var(--color-text-primary);
+    font-size: 0.675rem;
+}
+
+.product h2 {
+    text-align: center;
+    color: var(--color-text-primary);
+    font-family: "Baloo", sans-serif;
+    font-size: 1rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    margin-top: 0.5rem;
+}
+
+.product h2 span {
+    color: var(--color-primary);
+}
+
+.product img {
+    width: 75%;
+    height: auto;
+}
+
+.product h3 {
+    font-family: "Nunito", sans-serif;
+    color: var(--color-primary);
+    font-size: 0.8rem;
+}
+
+.product p {
+    font-family: "Nunito", sans-serif;
+    color: var(--color-text-primary);
+    font-size: 0.675rem;
+    padding-top: 6px;
+}
+
+.featured {
+    background-color: var(--color-primary);
+}
+
+.featured h2 {
+    color: white;
+    font-family: "Baloo", sans-serif;
+    font-size: 1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.featured h2 span {
+    color: var(--color-secondary);
+}
+
+.featured .card {
+    background-color: white;
+    border: 3px solid var(--color-border);
+    border-radius: 1.5rem;
+    padding: 0 18px;
+}
+
+.featured .card img {
+    width: 85%;
+    height: auto;
+    margin: 0 auto;
+}
+
+.featured h3,
+.featured .price {
+    font-family: "Balooo", sans-serif;
+    font-weight: bold;
+    font-size: 0.8rem;
+    color: var(--color-text-primary);
+}
+
+.featured .desc,
+.featured .stock {
+    font-family: "Nunito", sans-serif;
+    font-size: 0.675rem;
+}
+
+.featured .desc {
+    color: var(--color-text-secondary);
+}
+
+.featured .price {
+    font-size: 0.75rem;
+}
+
+.featured .stock {
+    color: var(--color-accent);
+}
+
+.featured a {
+    display: inline;
+    padding: 8px 24px;
+    width: fit-content;
+    font-family: "Quicksand", sans-serif;
+    font-size: 0.9rem;
+    font-weight: bold;
+    background-color: var(--color-accent);
+    color: white;
+    text-decoration: none;
+    border-radius: 18px;
+    text-align: center;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 350px;
+    margin-top: 1.5rem;
+    padding: 0 0.8rem;
+}
+
+.form h2 {
+    font-family: "Baloo", sans-serif;
+    color: black;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.form label {
+    font-family: "Nunito", sans-serif;
+    font-size: 0.675rem;
+}
+
+.form input[type="text"],
+.form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid var(--color-border);
+    border-radius: 3px;
+}
+
+.form button {
+    background-color: var(--color-accent);
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: white;
+    border: none;
+    padding: 8px 24px;
+    border-radius: 18px;
+    cursor: pointer;
+    display: block;
+    margin: 0 auto;
+}
+
+footer h2 {
+    font-family: "Baloo", sans-serif;
+    color: var(--color-text-primary);
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+footer .credits {
+    font-family: "Nunito", sans-serif;
+    color: var(--color-text-secondary);
+    font-size: 0.525rem;
+}
+
+footer .connect {
+    text-align: center;
+    font-size: 0.7rem;
+}
+
+footer a img {
+    width: 12px;
+    margin: 0;
+}
+
+.signup img {
+    width: 30%;
+    height: auto;
+}
+
+.comp-name {
+    font-family: "Baloo", sans-serif;
+    color: var(--color-primary);
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.signup h1 {
+    font-family: "Baloo", sans-serif;
+    color: var(--color-text-primary);
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.sub {
+    font-family: "Nunito", sans-serif;
+    color: var(--color-text-primary);
+    font-size: 0.8rem;
+}
+
+.signup button {
+    background-color: var(--color-accent);
+    font-family: "Quicksand", sans-serif;
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: white;
+    border: none;
+    padding: 8px 32px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: block;
+    margin: 10px auto;
+}
+
+.username {
+    font-family: "Baloo", sans-serif;
+    color: white;
+    font-size: 0.8rem;
+    margin: 0;
+}
+
+.sidebar {
+    flex-shrink: 0;
+    background-color: #d3d3d3;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    height: 100vh;
+    width: 38px;
+    transition: width 0.3s ease;
+    overflow: hidden;
+}
+
+.sidebar.expanded {
+    width: 35%;
+}
+
+.sidebar button {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.sidebar img {
+    width: 24px;
+    height: auto;
+}
+
+.sidebar a {
+    color: var(--color-secondary);
+    text-decoration: none;
+    margin-right: 0.8rem;
+    font-weight: bold;
+}
+
+.menu-text {
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    white-space: nowrap; /* Prevent text from breaking */
+    margin-left: 0.5rem;
+}
+
+.main-content h1,
+.main-content h2 {
+    font-family: "Baloo", sans-serif;
+    color: var(--color-text-primary);
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.d-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    width: fit-content;
+}
+
+.d-item {
+    border: 1px solid var(--color-text-primary);
+    border-radius: 18px;
+    padding: 1rem;
+}
+
+.d-home img {
+    height: 25px;
+}
+
+.d-home .num {
+    font-family: "Baloo", sans-serif;
+    color: var(--color-text-primary);
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.d-home .desc {
+    display: block;
+    font-family: "Nunito", sans-serif;
+    color: var(--color-text-primary);
+    font-size: 0.675rem;
+}
+
+.d-overview .table-responsive,
+.d-product .table-responsive,
+.d-category .table-responsive,
+.d-category-show .table-responsive,
+.d-inventory .table-responsive,
+.d-inventory-update .table-responsive,
+.d-prices .table-responsive,
+.d-prices-edit .table-responsive,
+.admin-list .table-responsive {
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+.d-overview .table,
+.d-product .table,
+.d-category .table,
+.d-category-show .table,
+.d-inventory .table,
+.d-inventory-update .table,
+.d-prices .table,
+.d-prices-edit .table,
+.admin-list .table {
+    width: 100%;
+    table-layout: auto;
+    font-size: 0.575rem;
+}
+
+.d-overview .table-bordered,
+.d-product .table-bordered,
+.d-category .table-bordered,
+.d-category-show .table-bordered,
+.d-inventory .table-bordered,
+.d-inventory-update .table-bordered,
+.d-prices .table-bordered,
+.d-prices-edit .table-bordered,
+.admin-list .table-bordered {
+    border: 2px solid #222;
+}
+
+.d-overview .table-bordered th,
+.d-overview .table-bordered td,
+.d-product .table-bordered th,
+.d-product .table-bordered td,
+.d-category .table-bordered th,
+.d-category .table-bordered td,
+.d-category-show .table-bordered th,
+.d-category-show .table-bordered td,
+.d-inventory .table-bordered th,
+.d-inventory .table-bordered td,
+.d-inventory-update .table-bordered th,
+.d-inventory-update .table-bordered td,
+.d-prices .table-bordered th,
+.d-prices .table-bordered td,
+.d-prices-edit .table-bordered th,
+.d-prices-edit .table-bordered td,
+.admin-list .table-bordered th,
+.admin-list .table-bordered td {
+    padding: 1.2em 0.2em;
+    word-break: break-word;
+}
+
+.d-overview .table-bordered th,
+.d-product .table-bordered th,
+.d-category .table-bordered th,
+.d-category-show .table-bordered th,
+.d-inventory .table-bordered th,
+.d-inventory-update .table-bordered th,
+.d-prices .table-bordered th,
+.d-prices-edit .table-bordered th,
+.admin-list .table-bordered th {
+    background-color: var(--color-primary);
+    color: white;
+    font-family: "Baloo", sans-serif;
+    font-weight: bold;
+}
+
+.img-col img {
+    width: 40px;
+}
+
+.icon-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.icon-col .icon {
+    width: 12px;
+    height: auto;
+}
+
+.add-btn {
+    background-color: var(--color-accent);
+    font-family: "Quicksand", sans-serif;
+    font-size: 0.675rem;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+    border: none;
+    border-radius: 8px;
+    padding: 0.4rem 1.2rem;
+    cursor: pointer;
+}
+
+.product-search-bar {
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.search-form {
+    display: flex;
+    align-items: start;
+}
+
+.search-input-wrapper {
+    position: relative;
+    flex: 1;
+}
+
+.search-icon {
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 12px;
+    pointer-events: none;
+}
+
+.search-input {
+    border: 1px solid black;
+    border-radius: 2rem;
+    font-family: "Nunito", sans-serif;
+    color: var(--color-text-primary);
+    font-size: 0.475rem;
+    padding: 0.4rem 0.8rem 0.4rem 2rem;
+    width: 100%;
+}
+
+.search-input::placeholder {
+    color: #d3d3d3;
+    font-size: 0.5rem;
+}
+
+.search-btn {
+    align-self: center;
+    background: var(--color-accent);
+    color: #fff;
+    border: none;
+    border-radius: 0.3rem;
+    font-weight: bold;
+    font-size: 0.5rem;
+    padding: 0.4rem 1.2rem;
+    cursor: pointer;
+}
+
+.search-btn:hover {
+    background: #24c18a;
+}
+
+.return img {
+    width: 24px;
+    height: auto;
+    margin-right: 8px;
+}
+
+.return a {
+    display: flex;
+    align-items: center;
+    color: var(--color-accent);
+    text-decoration: none;
+    font-family: "Quicksand", sans-serif;
+    font-size: 0.8rem;
+}
+
+.crud-card {
+    border-radius: 2rem;
+    box-shadow: 0 2px 16px #0002;
+    width: 300px;
+    padding: 1rem;
+}
+
+.crud-card b {
+    font-family: "Baloo", sans-serif;
+    color: var(--color-text-primary);
+    font-size: 0.8rem;
+}
+
+.crud-card span {
+    font-family: "Nunito", sans-serif;
+    color: var(--color-text-secondaryary);
+    font-size: 0.675rem;
+}
+
+.crud-card .desc {
+    margin-top: 0.5rem;
+}
+
+.crud-card img {
+    width: 120px;
+    object-fit: cover;
+    border-radius: 10px;
+    background: #eaf6fb;
+}
+
+.crud-card p {
+    font-family: "Nunito", sans-serif;
+    color: var(--color-text-secondary);
+    font-size: 0.675rem;
+}
+
+.crud-card a,
+.crud-card button {
+    font-family: "Quicksand", sans-serif;
+    font-size: 0.675rem;
+    text-decoration: none;
+    color: white;
+    background-color: var(--color-accent);
+    border-radius: 8px;
+    padding: 0.4rem 1.2rem;
+}
+
+.crud-card input,
+.crud-card select {
+    font-size: 0.5rem;
+    padding: 0.2rem 0.5rem;
+}
+
+.crud-card label img {
+    width: 16px;
+    height: fit-content;
+}
+
+.crud-card label span {
+    font-family: "Nunito", sans-serif;
+    color: var(--color-text-secondary);
+}
+
+/* .crud-card button {
+    background-color: var(--color-accent);
+    border-radius: 8px;
+    color: white;
+    font-weight: bold;
+    font-family: "Quicksand", sans-serif;
+    font-size: 0.675rem;
+    cursor: pointer;
+} */
+
+.upload img {
+    width: 18px;
+}
+
+.delete-modal {
+    display: none;
+    position: fixed;
+    z-index: 1050;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.3);
+    align-items: center;
+    justify-content: center;
+}
+
+.delete-modal-content {
+    background: #fff;
+    border-radius: 16px;
+    padding: 2rem 2.5rem;
+    text-align: center;
+    box-shadow: 0 2px 16px #0002;
+    max-width: 340px;
+    margin: auto;
+    border: 3px solid #a084e8;
+}
+
+.delete-img {
+    font-size: 4rem;
+    color: #a084e8;
+    line-height: 1;
+}
+
+.delete-modal .check {
+    background: var(--color-accent);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 1.5rem;
+    color: #fff;
+    margin-right: 10px;
+    transition: background 0.2s;
+}
+
+.delete-modal .cross {
+    background: red;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 1.5rem;
+    color: #fff;
+    transition: background 0.2s;
+}
+
+.d-inventory-update td a,
+.d-prices-edit td a {
+    font-family: "Quicksand", sans-serif;
+    font-size: 0.5rem;
+    text-decoration: none;
+    color: white;
+    background-color: var(--color-accent);
+    border-radius: 8px;
+    padding: 0.2rem 0.4rem;
+}
+
+.d-inventory-update .form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 350px;
+}
+
+/* Make quantity and stock columns fill the cell and align center */
+.d-inventory-update td input[type="number"],
+.d-inventory-update td select {
+    width: 30px;
+    margin: 0 auto;
+    padding: 0.2rem 0.3rem;
+    font-size: 0.5rem;
+    box-sizing: border-box;
+    display: block;
+}
+
+.d-category-edit .card,
+.d-category-create .card {
+    max-width: 500px;
+    background: #fff;
+    border-radius: 20px;
+    border: 1.5px solid #e6e6e6;
+}
+
+.d-category-edit .form-label,
+.d-category-create .form-label {
+    font-weight: bold;
+    font-size: 0.8rem;
+    margin-bottom: 8px;
+}
+
+.d-category-edit .form-control,
+.d-category-create .form-control {
+    appearance: none;
+    background: #e6e6e6;
+    border: none;
+    font-size: 0.675rem;
+    font-weight: bold;
+}
+
+.d-category-edit span,
+.d-category-create span {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.d-category-edit svg,
+.d-category-create svg {
+    width: 24px;
+    height: 24px;
+    fill: #222;
+}
+
+.d-category-edit button,
+.d-category-create button {
+    background: var(--color-accent);
+    color: #fff;
+    font-weight: bold;
+    font-size: 0.675rem;
+    border: none;
+    border-radius: 8px;
+    padding: 0.6rem 0.8rem;
+}
+
+.d-prices-edit td input[type="number"] {
+    width: 50px;
+    margin: 0 auto;
+    padding: 0.2rem 0.3rem;
+    font-size: 0.5rem;
+    box-sizing: border-box;
+    display: block;
+}
+
+.sa-overview h1 {
+    margin-top: 1rem;
+}
+
+.sa-overview .buttons {
+    width: 120px;
+    margin-bottom: 1rem;
+}
+
+.sa-overview .card {
+    height: 120px;
+    margin: 1rem 2rem;
+}
+
+.admin-img {
+    width: 50px;
+    height: auto;
+}
+
+.pm-img {
+    width: auto;
+    height: 45px;
+}
+
+.permission-col {
+    width: 180px;
+}
+
+.tamad-baloo {
+    font-family: "Baloo", sans-serif;
+}
+
+.tamad-nunito {
+    font-family: "Nunito", sans-serif;
+}
+
+/* RESPONSIVENESS */
+
+@media (min-width: 1536px) {
+    nav {
+        padding: 0.8rem !important;
+    }
+    nav img {
+        width: 60px;
+    }
+
+    nav span {
+        font-size: 1.5rem;
+        padding-left: 0.5rem;
+    }
+
+    nav a {
+        font-size: 1.3rem;
+    }
+
+    .d-nav a {
+        font-size: 1.2rem;
+    }
+
+    .d-nav p {
+        font-size: 1.1rem;
+    }
+
+    .row .left-col {
+        padding: 80px !important;
+    }
+
+    .left-col h1 {
+        font-size: 4.5rem;
+    }
+
+    .left-col p {
+        font-size: 1.5rem;
+    }
+
+    .left-col a {
+        padding: 0.4rem 3.5rem;
+        font-size: 1.8rem;
+        border-radius: 2rem;
+        margin-left: 0.8rem;
+        margin-top: 1.2rem;
+    }
+
+    .right-col img {
+        top: 68%;
+        transform: translate(-50%, -50%);
+        height: 680px;
+        width: auto;
+    }
+
+    .row-under p {
+        font-size: 1.8rem;
+        padding: 20px 30px;
+        padding-bottom: 60px;
+    }
+
+    .know-us {
+        background-position: bottom;
+    }
+
+    .know-us .row {
+        height: 900px;
+        padding-top: 8rem;
+    }
+
+    .know-us h2 {
+        font-size: 5.5rem;
+    }
+
+    .know-us p {
+        font-size: 2rem;
+        padding: 0 12rem !important;
+    }
+
+    .product {
+        margin-top: -30px; /* dko mafigure out san yung margin sa know-us section lol*/
+        margin-bottom: 2.5rem;
+    }
+
+    .product h2 {
+        font-size: 5.3rem;
+    }
+
+    .product img {
+        width: 55%;
+    }
+
+    .product h3 {
+        font-size: 2.3rem;
+        font-weight: bold;
+    }
+
+    .product p {
+        font-size: 1.5rem;
+        padding: 0.3rem 8rem;
+    }
+
+    .featured h2 {
+        font-size: 5.5rem;
+    }
+
+    .featured .card {
+        width: 320px;
+        height: auto;
+        border: 8px solid var(--color-border);
+        border-radius: 2.5rem;
+        padding: 0.5rem 0.5rem;
+        margin: 1rem 1.2rem;
+    }
+
+    .featured .card img {
+        width: 85%;
+    }
+
+    .featured h3 {
+        font-size: 1.5rem;
+    }
+
+    .featured .desc {
+        font-size: 1.2rem;
+    }
+
+    .featured .price {
+        font-size: 1.4rem;
+    }
+
+    .featured .stock {
+        font-size: 1.4rem;
+        margin-top: auto;
+    }
+
+    .featured a {
+        padding: 0.5rem 2rem;
+        font-size: 1.5rem;
+        border-radius: 3rem;
+        margin-top: auto;
+    }
+
+    .form {
+        width: 600px;
+        margin: 2.5rem auto;
+        display: flex;
+    }
+
+    .form h2 {
+        font-size: 2rem;
+        margin-bottom: 2rem !important;
+    }
+
+    .form label {
+        font-size: 1.5rem;
+    }
+
+    .form input[type="text"],
+    .form textarea {
+        padding: 20px;
+        margin-bottom: 15px;
+        border: 3px solid var(--color-border);
+        border-radius: 8px;
+    }
+
+    .form button {
+        font-size: 1.5rem;
+        padding: 0.8rem 8rem;
+        border-radius: 2rem;
+    }
+
+    footer .row {
+        margin: 0 3rem;
+    }
+
+    footer h2 {
+        font-size: 3.5rem;
+        font-weight: bold;
+    }
+
+    footer .credits {
+        font-size: 1.3rem;
+    }
+
+    footer .connect {
+        text-align: end;
+        font-size: 2rem;
+        margin-right: 3rem;
+    }
+
+    footer a img {
+        width: 40px;
+    }
+
+    .footer-img {
+        display: block;
+        width: 1300px !important;
+        height: auto;
+        margin: 0 auto;
+        margin-top: -20px;
+    }
+
+    .signup .row {
+        width: 800px;
+        border-radius: 1rem;
+        border: 2px solid var(--color-border);
+        padding: 1.5rem;
+        margin: 0 auto;
+    }
+
+    .signup img {
+        width: 30%;
+        height: auto;
+    }
+
+    .comp-name {
+        font-size: 1.25rem;
+    }
+
+    .signup h1 {
+        font-size: 2rem;
+    }
+
+    .sub {
+        font-size: 1.3rem;
+    }
+
+    .signup input[type="text"],
+    .signup input[type="email"],
+    .signup input[type="password"] {
+        max-width: 80%;
+        font-size: 1.5rem;
+        padding: 1rem 1.5rem;
+        height: 3rem;
+        margin: 0 auto;
+    }
+
+    .signup button {
+        font-size: 1.2rem;
+        padding: 0.6rem 4rem;
+        border-radius: 0.8rem;
+    }
+
+    .sidebar {
+        width: 50px;
+    }
+
+    .sidebar.expanded {
+        width: 12%;
+    }
+
+    .sidebar li a {
+        margin-bottom: 0.8rem;
+    }
+
+    .sidebar img {
+        width: 32px;
+        height: auto;
+        margin-left: 0.2rem;
+    }
+
+    #menu-toggle {
+        margin-top: 0.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .sidebar a {
+        margin-right: 0.8rem;
+    }
+
+    .menu-text {
+        font-size: 1.3rem;
+        margin-left: 0.8rem;
+    }
+
+    .main-content h1,
+    .main-content h2 {
+        font-size: 2rem;
+    }
+
+    .d-home h1,
+    .d-overview h2 {
+        margin-left: 5rem;
+        margin-bottom: 2rem;
+    }
+
+    .d-grid {
+        row-gap: 4rem;
+        column-gap: 12rem;
+        margin: auto;
+    }
+
+    .d-item {
+        width: 400px;
+        height: 200px;
+        padding: 1rem;
+    }
+
+    .d-home img {
+        height: 65px;
+        margin: auto 0;
+        margin-left: 1.5rem;
+    }
+
+    .d-home .text {
+        margin: auto;
+    }
+
+    .d-home .num {
+        font-size: 3rem;
+    }
+
+    .d-home .desc {
+        font-size: 1.5rem;
+    }
+
+    .d-overview .table-responsive,
+    .d-category .table-responsive {
+        max-width: 80%;
+        margin: auto;
+    }
+
+    .d-product .table-responsive,
+    .d-inventory .table-responsive,
+    .d-inventory-update .table-responsive {
+        max-width: 90%;
+        margin-left: auto;
+    }
+
+    .d-prices .table-responsive,
+    .d-category-show .table-responsive,
+    .d-prices-edit .table-responsive {
+        max-width: 60%;
+        margin: auto;
+        margin-top: 2rem;
+    }
+
+    .d-overview .table,
+    .d-product .table,
+    .d-category .table,
+    .d-category-show .table,
+    .d-inventory .table,
+    .d-inventory-update .table,
+    .d-prices .table,
+    .d-prices-edit .table,
+    .admin-list .table {
+        font-size: 1rem;
+    }
+
+    .img-col img {
+        width: 60px;
+    }
+    .icon-col .icon {
+        width: 24px;
+        margin: 0.2rem 0;
+    }
+
+    .add-btn {
+        font-size: 1.2rem;
+        border-radius: 8px;
+        padding: 0.5rem 1.3rem;
+    }
+
+    .d-category .add-btn {
+        margin-right: 6rem;
+    }
+
+    .d-inventory .add-btn {
+        margin-left: 10rem;
+    }
+
+    .product-search-bar {
+        margin-right: 12rem;
+    }
+
+    .search-icon {
+        width: 24px;
+    }
+
+    .search-input {
+        font-size: 1rem;
+        padding: 0.6rem 1rem 0.6rem 3rem;
+        width: 400px;
+    }
+
+    .search-input::placeholder {
+        font-size: 1em;
+    }
+
+    .search-btn {
+        font-size: 1rem;
+        border-radius: 8px;
+    }
+
+    .return img {
+        width: auto;
+        height: 40px;
+        margin-right: 0.8rem;
+    }
+
+    .return a {
+        font-size: 1.2rem;
+        margin-bottom: 0.3rem;
+    }
+
+    .crud-card {
+        border-radius: 2rem;
+        box-shadow: 0 2px 16px #0002;
+        width: 650px;
+        padding: 2rem;
+    }
+
+    .d-product-edit .crud-card,
+    .d-product-create .crud-card {
+        width: 750px;
+    }
+
+    .crud-card .left-col {
+        width: 55%;
+    }
+
+    .crud-card .text {
+        margin-bottom: 0.8rem;
+    }
+
+    .crud-card b {
+        font-size: 1.2rem;
+    }
+
+    .crud-card span {
+        font-size: 1rem;
+    }
+
+    .crud-card img {
+        width: 240px;
+    }
+
+    .crud-card p {
+        font-size: 1rem;
+        margin-top: 1rem;
+    }
+
+    .crud-card a,
+    .crud-card button {
+        font-size: 1rem;
+        border-radius: 8px;
+        padding: 0.6rem 1.6rem;
+    }
+
+    .crud-card input,
+    .crud-card select {
+        font-size: 1rem;
+        padding: 0.3rem 0.8rem;
+    }
+
+    .crud-card label img {
+        width: 16px;
+        height: fit-content;
+    }
+
+    .upload img {
+        width: 18px;
+    }
+
+    .wide-select {
+        min-width: 180px;
+    }
+
+    .d-category-edit .card,
+    .d-category-create .card {
+        max-width: 600px;
+        border-radius: 20px;
+        border: 1.5px solid #e6e6e6;
+    }
+
+    .d-category-edit .form-label,
+    .d-category-create .form-label {
+        font-size: 1.25rem;
+    }
+
+    .d-category-edit .form-control,
+    .d-category-create .form-control {
+        font-size: 1rem;
+    }
+
+    .d-category-edit span,
+    .d-category-create span {
+        right: 15px;
+        top: 50%;
+    }
+
+    .d-category-edit button,
+    .d-category-create button {
+        font-size: 1rem;
+    }
+
+    .d-inventory-update td a,
+    .d-prices-edit td a {
+        font-size: 1rem;
+        border-radius: 8px;
+        padding: 0.4rem 3rem;
+    }
+
+    .d-prices-edit td input[type="number"] {
+        width: 220px;
+        padding: 0.4rem 3rem;
+        font-size: 1rem;
+    }
+
+    .d-inventory-update .form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 350px;
+    }
+
+    .d-inventory-update td input[type="number"] {
+        width: 50px;
+        margin: 0 auto;
+        padding: 0.2rem 0.3rem;
+        font-size: 0.5rem;
+        box-sizing: border-box;
+        display: block;
+    }
+
+    .d-inventory-update td select {
+        width: 180px;
+        font-size: 1rem;
+    }
+
+    .delete-modal-content {
+        max-width: 500px;
+        padding: 3rem 4rem;
+        padding-bottom: 1rem;
+        font-size: 2rem;
+    }
+
+    .delete-img {
+        font-size: 8rem;
+    }
+
+    .delete-modal .check {
+        width: 50px;
+        height: 50px;
+        font-size: 2rem;
+        margin-right: 20px;
+    }
+
+    .delete-modal .cross {
+        width: 50px;
+        height: 50px;
+        font-size: 2rem;
+    }
+
+    .sa-overview h1 {
+        margin-top: 3rem;
+    }
+
+    .sa-overview h2 {
+        font-size: 3rem;
+    }
+
+    .sa-overview .card {
+        border-radius: 2rem;
+        width: 500px;
+        height: auto;
+        margin: 1rem 2rem;
+        padding: 1rem;
+    }
+
+    .admin-img {
+        width: 100px;
+        height: auto;
+        margin-top: .6rem;
+        margin-left: .5rem;
+    }
+
+    .pm-img {
+        width: auto;
+        height: 95px;
+        margin-top: .6rem;
+        margin-left: .5rem;
+    }
+
+    .sa-overview .buttons {
+        width: 240px;
+    }
+
+    .sa-overview .admin-title {
+        margin-top: 1.5rem;
+    }
+
+    .sa-overview .admin {
+        margin-top: 1.5rem;
+    }
+}
