@@ -23,7 +23,18 @@ Route::get('/', function () {
     return view('home');
 })->name('home');
 
+Route::get('/', function () {
+    return view('home');
+})->name('home');
 
+// Authentication Routes
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// New Registration Routes
+Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [AuthController::class, 'register']);
 
 Route::get('/test-role', function () {
     return 'Role middleware works!';
