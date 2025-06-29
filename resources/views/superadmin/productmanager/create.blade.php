@@ -8,27 +8,42 @@
             @include('partials._return', ['route' => 'productmanager.index'])
             <h1 class="mx-auto">Create Product Manager</h1>
         </div>
+        
+        {{-- Display validation errors --}}
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+        
         <div class="card mx-auto p-4" style="max-width: 600px; border-radius: 24px;">
-            <form>
+            <form action="{{ route('productmanager.store') }}" method="POST">
+                @csrf
                 <div class="mb-4">
                     <input type="text" class="form-control fw-bold mb-4"
                         style="font-size: 2rem; border: 1px solid #444; border-radius: 4px; padding: 0.2em 0.5em; display: inline-block;"
-                        id="name" name="name" placeholder="Product Manager Name">
+                        id="name" name="name" placeholder="Product Manager Name" value="{{ old('name') }}" required>
                     <div class="mb-2 d-flex align-items-center">
                         <span class="tamad-baloo fw-bold" style="font-size: 1rem;">Email:</span>
                         <input type="email" class="form-control tamad-nunito ms-2 d-inline-block"
                             style="width: auto; min-width: 180px;" id="email" name="email"
-                            placeholder="pm@email.com">
+                            placeholder="pm@email.com" value="{{ old('email') }}" required>
                     </div>
                     <div class="mb-2 d-flex align-items-center">
                         <span class="tamad-baloo fw-bold" style="font-size: 1rem;">Username:</span>
                         <input type="text" class="form-control tamad-nunito ms-2 d-inline-block"
-                            style="width: auto; min-width: 120px;" id="username" name="username" placeholder="username">
+                            style="width: auto; min-width: 120px;" id="username" name="username" 
+                            placeholder="username" value="{{ old('username') }}">
                     </div>
                     <div class="mb-2 d-flex align-items-center">
                         <span class="tamad-baloo fw-bold" style="font-size: 1rem;">Password:</span>
                         <input type="password" class="form-control tamad-nunito ms-2 d-inline-block"
-                            style="width: auto; min-width: 120px;" id="password" name="password" placeholder="password">
+                            style="width: auto; min-width: 120px;" id="password" name="password" 
+                            placeholder="password" required>
                         <span class="ms-2" style="font-size: 1.2em; cursor:pointer;" id="toggle-password">
                             <svg id="eye-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22"
                                 fill="#222" viewBox="0 0 24 24">

@@ -50,7 +50,6 @@ class UsersController extends Controller
         // Format user data similar to the dummy structure for view compatibility
         $userData = [
             'id' => $user->id,
-            'role' => $user->getRoleNames()->first() ?? 'No Role',
             'name' => $user->name,
             'email' => $user->email,
             'username' => $user->email,
@@ -216,9 +215,84 @@ class UsersController extends Controller
         return view('superadmin.admin.create');
     }
 
+    public function storeAdmin(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8',
+            'username' => 'nullable|string|max:255',
+        ]);
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+        ]);
+
+        // Assign Admin role
+        $user->assignRole('Admin');
+
+        return redirect()->route('admin.index')->with('success', 'Admin created successfully.');
+    }
+
+    public function updateAdmin(Request $request, $id)
+    {
+        $admin = User::whereHas('roles', function($q) {
+            $q->where('name', 'Admin');
+        })->where('id', $id)->first();
+        
+        if (!$admin) {
+            abort(404);
+        }
+        
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $admin->id,
+            'username' => 'nullable|string|max:255',
+        ]);
+
+        $admin->update([
+            'name' => $request->name,
+            'email' => $request->email,
+        ]);
+
+        // Update password if provided
+        if ($request->filled('password')) {
+            $request->validate(['password' => 'min:8']);
+            $admin->update(['password' => bcrypt($request->password)]);
+        }
+
+        // Make sure role is still Admin (in case it was changed)
+        $admin->syncRoles(['Admin']);
+
+        return redirect()->route('admin.index')->with('success', 'Admin updated successfully.');
+    }
+
     public function createProductManager()
     {
         return view('superadmin.productmanager.create');
+    }
+
+    public function storeProductManager(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8',
+            'username' => 'nullable|string|max:255', // Add username validation if needed
+        ]);
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+        ]);
+
+        // Assign Product Manager role
+        $user->assignRole('Product Manager');
+
+        return redirect()->route('productmanager.index')->with('success', 'Product Manager created successfully.');
     }
 
     public function showProductManager($id)
@@ -255,6 +329,39 @@ class UsersController extends Controller
         ];
 
         return view('superadmin.productmanager.edit', ['prodman' => $prodmanData]);
+    }
+
+    public function updateProductManager(Request $request, $id)
+    {
+        $prodman = User::whereHas('roles', function($q) {
+            $q->where('name', 'Product Manager');
+        })->where('id', $id)->first();
+        
+        if (!$prodman) {
+            abort(404);
+        }
+        
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $prodman->id,
+            'username' => 'nullable|string|max:255',
+        ]);
+
+        $prodman->update([
+            'name' => $request->name,
+            'email' => $request->email,
+        ]);
+
+        // Update password if provided
+        if ($request->filled('password')) {
+            $request->validate(['password' => 'min:8']);
+            $prodman->update(['password' => bcrypt($request->password)]);
+        }
+
+        // Make sure role is still Product Manager (in case it was changed)
+        $prodman->syncRoles(['Product Manager']);
+
+        return redirect()->route('productmanager.index')->with('success', 'Product Manager updated successfully.');
     }
 
     public function destroyProductManager($id)

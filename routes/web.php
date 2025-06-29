@@ -99,18 +99,24 @@ Route::middleware(['auth'])->group(function () {
         // User Management (Full CRUD)
         Route::resource('users', UsersController::class);
         
-        // Admin Management
-        Route::get('/superadmin/admins', [UsersController::class, 'adminList'])->name('admin.index');
-        Route::get('/superadmin/admins/create', [UsersController::class, 'createAdmin'])->name('admin.create');
-        Route::get('/superadmin/admins/{id}', [UsersController::class, 'showAdmin'])->name('admin.show');
-        Route::get('/superadmin/admins/{id}/edit', [UsersController::class, 'editAdmin'])->name('admin.edit');
-        Route::delete('/superadmin/admins/{id}', [UsersController::class, 'destroyAdmin'])->name('admin.destroy');
+        // Admin Management routes group
+        Route::prefix('superadmin/admins')->name('admin.')->group(function () {
+            Route::get('/', [UsersController::class, 'adminList'])->name('index');
+            Route::get('/create', [UsersController::class, 'createAdmin'])->name('create');
+            Route::post('/', [UsersController::class, 'storeAdmin'])->name('store');
+            Route::get('/{id}', [UsersController::class, 'showAdmin'])->name('show');
+            Route::get('/{id}/edit', [UsersController::class, 'editAdmin'])->name('edit');
+            Route::put('/{id}', [UsersController::class, 'updateAdmin'])->name('update');
+            Route::delete('/{id}', [UsersController::class, 'destroyAdmin'])->name('destroy');
+        });
         
         // Product Manager Management
         Route::get('/superadmin/productmanagers', [UsersController::class, 'productManagerList'])->name('productmanager.index');
         Route::get('/superadmin/productmanagers/create', [UsersController::class, 'createProductManager'])->name('productmanager.create');
+        Route::post('/superadmin/productmanagers', [UsersController::class, 'storeProductManager'])->name('productmanager.store'); // Added store route
         Route::get('/superadmin/productmanagers/{id}', [UsersController::class, 'showProductManager'])->name('productmanager.show');
         Route::get('/superadmin/productmanagers/{id}/edit', [UsersController::class, 'editProductManager'])->name('productmanager.edit');
+        Route::put('/superadmin/productmanagers/{id}', [UsersController::class, 'updateProductManager'])->name('productmanager.update'); // Added update route
         Route::delete('/superadmin/productmanagers/{id}', [UsersController::class, 'destroyProductManager'])->name('productmanager.destroy');
 
         // Role and Permission Management
@@ -151,6 +157,9 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('inventory', InventoryController::class);
         Route::get('/inventory/stock-status', [InventoryController::class, 'stockStatus'])->name('inventory.stockStatus');
         
+        // Bulk Update Route
+        Route::post('/inventory/bulk-update', [InventoryController::class, 'bulkUpdate'])->name('inventory.bulkUpdate');
+
         // Price Management
         Route::resource('prices', PriceController::class)->except(['destroy']);
     });

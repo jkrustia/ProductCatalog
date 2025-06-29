@@ -8,29 +8,43 @@
             @include('partials._return', ['route' => 'productmanager.index'])
             <h1 class="mx-auto">Edit Product Manager</h1>
         </div>
+        
+        {{-- Display validation errors --}}
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+        
         <div class="card mx-auto p-4" style="max-width: 600px; border-radius: 24px;">
-            <form>
+            <form action="{{ route('productmanager.update', $prodman['id']) }}" method="POST">
+                @csrf
+                @method('PUT')
                 <div class="mb-4">
                     <input type="text" class="form-control fw-bold mb-4"
                         style="font-size: 2rem; border: 1px solid #444; border-radius: 4px; padding: 0.2em 0.5em; display: inline-block;"
-                        id="name" name="name" value="{{ $prodman['name'] }}">
+                        id="name" name="name" value="{{ old('name', $prodman['name']) }}" required>
                     <div class="mb-2 d-flex align-items-center">
                         <span class="tamad-baloo fw-bold" style="font-size: 1rem;">Email:</span>
                         <input type="email" class="form-control tamad-nunito ms-2 d-inline-block"
                             style="width: auto; min-width: 180px;" id="email" name="email"
-                            value="{{ $prodman['email'] }}">
+                            value="{{ old('email', $prodman['email']) }}" required>
                     </div>
                     <div class="mb-2 d-flex align-items-center">
                         <span class="tamad-baloo fw-bold" style="font-size: 1rem;">Username:</span>
                         <input type="text" class="form-control tamad-nunito ms-2 d-inline-block"
                             style="width: auto; min-width: 120px;" id="username" name="username"
-                            value="{{ $prodman['username'] }}">
+                            value="{{ old('username', $prodman['username']) }}">
                     </div>
                     <div class="mb-2 d-flex align-items-center">
                         <span class="tamad-baloo fw-bold" style="font-size: 1rem;">Password:</span>
                         <input type="password" class="form-control tamad-nunito ms-2 d-inline-block"
                             style="width: auto; min-width: 120px;" id="password" name="password"
-                            value="{{ $prodman['password'] }}">
+                            placeholder="Leave blank to keep current password">
                         <span class="ms-2" style="font-size: 1.2em; cursor:pointer;" id="toggle-password">
                             <svg id="eye-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22"
                                 fill="#222" viewBox="0 0 24 24">
