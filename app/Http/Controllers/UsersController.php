@@ -13,7 +13,7 @@ class UsersController extends Controller
         $users = User::with('roles')->get()->map(function($user) {
             return [
                 'id' => $user->id,
-                'role' => $user->getRoleNames()->first() ?? 'No Role', // Get first role name
+                'role' => $user->getRoleNames()->first() ?? 'User', // Get first role name
                 'name' => $user->name,
                 'email' => $user->email,
                 'username' => $user->email, // Using email as username since there's no username field
