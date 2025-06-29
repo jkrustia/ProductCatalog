@@ -123,7 +123,7 @@ Route::middleware(['auth'])->group(function () {
     // =========================================
     
     Route::group(['middleware' => ['role:Admin']], function () {
-        // Admin Dashboard
+        // Primary Admin Dashboard (matches AuthController expectation)
         Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
         
         // Alternative admin dashboard route
@@ -204,7 +204,7 @@ Route::middleware(['auth'])->group(function () {
     // =========================================
     
     // Individual dashboard routes for each role
-    Route::get('/admin/dashboard', function () {
+    Route::get('/admin/dashboard-view', function () {
         return view('admin.dashboard');
     })->name('admin.dashboard.view');
 

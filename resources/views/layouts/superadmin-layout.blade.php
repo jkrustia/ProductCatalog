@@ -26,7 +26,7 @@
                 </form>
                 <div class="me-2">
                     <img src="{{ asset('images/pic.png') }}" alt="User Image" width="30">
-                    <p class="username text-center fw-bold">PM</p>
+                    <p class="username text-center fw-bold">{{ Auth::user()->name }}</p>
                 </div>
             </div>
         </div>
