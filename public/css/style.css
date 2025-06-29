@@ -851,6 +851,18 @@ footer a img {
     font-family: "Nunito", sans-serif;
 }
 
+/* Ensure no border on the delete button */
+.admin-list .table button[title="Delete"] {
+    border: none !important;
+    background: transparent; /* Ensure no background color from button defaults */
+}
+
+/* Ensure no border on the image icons within action links/buttons */
+.admin-list .table .icon-col a img.icon,
+.admin-list .table .icon-col button img.icon {
+    border: none !important;
+}
+
 /* RESPONSIVENESS */
 
 @media (min-width: 1536px) {

@@ -13,14 +13,14 @@ class UsersController extends Controller
         $users = User::with('roles')->get()->map(function($user) {
             return [
                 'id' => $user->id,
-                'role' => $user->getRoleNames()->first() ?? 'User', // Get first role name
+                'role' => $user->getRoleNames()->first() ?? 'No Role', // Get first role name
                 'name' => $user->name,
                 'email' => $user->email,
                 'username' => $user->email, // Using email as username since there's no username field
-                'permissions' => $user->getPermissionNames(), // Get all permissions
+                'permissions' => $user->getPermissionNames()->toArray(), // Convert to array for blade compatibility
                 'created_at' => $user->created_at,
             ];
-        });
+        })->toArray(); // Convert collection to array for blade compatibility
         
         return view('superadmin.users.index', compact('users'));
     }
@@ -36,7 +36,7 @@ class UsersController extends Controller
             'name' => $user->name,
             'email' => $user->email,
             'username' => $user->email,
-            'permissions' => $user->getPermissionNames(),
+            'permissions' => $user->getPermissionNames()->toArray(), // Convert to array
             'created_at' => $user->created_at,
         ];
         
@@ -53,8 +53,9 @@ class UsersController extends Controller
             'name' => $user->name,
             'email' => $user->email,
             'username' => $user->email,
+            'role' => $user->getRoleNames()->first() ?? 'No Role', // Add role for edit form
             'password' => '', // Empty password field for security
-            'permissions' => $user->getPermissionNames(),
+            'permissions' => $user->getPermissionNames()->toArray(), // Convert to array
         ];
         
         return view('superadmin.users.edit', ['user' => $userData]);
@@ -71,7 +72,8 @@ class UsersController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
-            'role' => 'required|string|exists:roles,name',
+            'role' => 'required|string|in:Admin,Product Manager', // Use specific role names
+            'username' => 'nullable|string|max:255', // Add username validation
         ]);
 
         $user = User::create([
@@ -93,7 +95,8 @@ class UsersController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
-            'role' => 'required|string|exists:roles,name',
+            'role' => 'required|string|in:Admin,Product Manager', // Use specific role names
+            'username' => 'nullable|string|max:255', // Add username validation
         ]);
 
         $user->update([
@@ -131,10 +134,10 @@ class UsersController extends Controller
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
-                'permissions' => $user->getPermissionNames(),
+                'permissions' => $user->getPermissionNames()->toArray(), // Convert to array
                 'created_at' => $user->created_at,
             ];
-        });
+        })->toArray(); // Convert collection to array
 
         return view('superadmin.admin.index', compact('admin'));
     }
@@ -149,10 +152,10 @@ class UsersController extends Controller
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
-                'permissions' => $user->getPermissionNames(),
+                'permissions' => $user->getPermissionNames()->toArray(), // Convert to array
                 'created_at' => $user->created_at,
             ];
-        });
+        })->toArray(); // Convert collection to array
 
         return view('superadmin.productmanager.index', compact('prodman'));
     }
@@ -168,7 +171,18 @@ class UsersController extends Controller
             abort(404);
         }
 
-        return view('superadmin.admin.show', compact('admin'));
+        // Format admin data for view compatibility
+        $adminData = [
+            'id' => $admin->id,
+            'name' => $admin->name,
+            'email' => $admin->email,
+            'username' => $admin->email,
+            'role' => 'Admin',
+            'permissions' => $admin->getPermissionNames()->toArray(),
+            'created_at' => $admin->created_at,
+        ];
+
+        return view('superadmin.admin.show', ['admin' => $adminData]);
     }
 
     public function editAdmin($id)
@@ -188,8 +202,9 @@ class UsersController extends Controller
             'name' => $admin->name,
             'email' => $admin->email,
             'username' => $admin->email,
+            'role' => 'Admin',
             'password' => '', // Empty password field for security
-            'permissions' => $admin->getPermissionNames(),
+            'permissions' => $admin->getPermissionNames()->toArray(), // Convert to array
         ];
         
         return view('superadmin.admin.edit', ['admin' => $adminData]);
@@ -280,7 +295,7 @@ class UsersController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
-            'username' => 'nullable|string|max:255', // Add username validation if needed
+            'username' => 'nullable|string|max:255',
         ]);
 
         $user = User::create([
@@ -305,7 +320,18 @@ class UsersController extends Controller
             abort(404);
         }
 
-        return view('superadmin.productmanager.show', compact('prodman'));
+        // Format product manager data for view compatibility
+        $prodmanData = [
+            'id' => $prodman->id,
+            'name' => $prodman->name,
+            'email' => $prodman->email,
+            'username' => $prodman->email,
+            'role' => 'Product Manager',
+            'permissions' => $prodman->getPermissionNames()->toArray(),
+            'created_at' => $prodman->created_at,
+        ];
+
+        return view('superadmin.productmanager.show', ['prodman' => $prodmanData]);
     }
 
     public function editProductManager($id)
@@ -324,8 +350,9 @@ class UsersController extends Controller
             'name' => $prodman->name,
             'email' => $prodman->email,
             'username' => $prodman->email,
+            'role' => 'Product Manager',
             'password' => '', // Empty password field for security
-            'permissions' => $prodman->getPermissionNames(),
+            'permissions' => $prodman->getPermissionNames()->toArray(), // Convert to array
         ];
 
         return view('superadmin.productmanager.edit', ['prodman' => $prodmanData]);
