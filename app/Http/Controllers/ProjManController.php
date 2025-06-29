@@ -6,38 +6,37 @@ use Illuminate\Http\Request;
 
 class ProjManController extends Controller
 {
-    // Dummy data
-    private $prodman = [
-        [
-            'id' => 1,
-            'name' => 'David Miller',
-            'username' => 'david',
-            'email' => 'david@example.com',
-            'password' => 'pm12345',
-            'permissions' => ['View Products', 'Edit Products', 'Assign Tasks'],
-        ],
-        [
-            'id' => 2,
-            'name' => 'Emma Wilson',
-            'username' => 'emma',
-            'email' => 'emma@example.com',
-            'password' => 'pm23456',
-            'permissions' => ['View Products', 'Limited Access'],
-        ],
-        [
-            'id' => 3,
-            'name' => 'Frank Harris',
-            'username' => 'frank',
-            'email' => 'frank@example.com',
-            'password' => 'pm34567',
-            'permissions' => ['Read Only'],
-        ],
-    ];
+    // // Dummy data
+    // private $prodman = [
+    //     [
+    //         'id' => 1,
+    //         'name' => 'David Miller',
+    //         'username' => 'david',
+    //         'email' => 'david@example.com',
+    //         'password' => 'pm12345',
+    //         'permissions' => ['View Products', 'Edit Products', 'Assign Tasks'],
+    //     ],
+    //     [
+    //         'id' => 2,
+    //         'name' => 'Emma Wilson',
+    //         'username' => 'emma',
+    //         'email' => 'emma@example.com',
+    //         'password' => 'pm23456',
+    //         'permissions' => ['View Products', 'Limited Access'],
+    //     ],
+    //     [
+    //         'id' => 3,
+    //         'name' => 'Frank Harris',
+    //         'username' => 'frank',
+    //         'email' => 'frank@example.com',
+    //         'password' => 'pm34567',
+    //         'permissions' => ['Read Only'],
+    //     ],
+    // ];
 
     public function index()
     {
-        $prodman = $this->prodman;
-        return view('superadmin.productmanager.index', compact('prodman'));
+        return redirect()->route('productmanager.index'); // Redirects to UsersController@productManagerList
     }
 
     public function show($id)

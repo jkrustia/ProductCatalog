@@ -9,38 +9,37 @@ use App\Models\Category;
 
 class AdminController extends Controller
 {
-    // Dummy data
-    private $admin = [
-        [
-            'id' => 1,
-            'name' => 'Alice Smith',
-            'username' => 'alice',
-            'email' => 'alice@example.com',
-            'password' => 'admin12345',
-            'permissions' => ['View Users', 'Edit Products', 'Full Access', 'Edit Products', 'Full Access', 'Edit Products', 'Full Access'],
-        ],
-        [
-            'id' => 2,
-            'name' => 'Bob Johnson',
-            'username' => 'bob',
-            'email' => 'bob@example.com',
-            'password' => 'admin23456',
-            'permissions' => ['View Users', 'Limited Access'],
-        ],
-        [
-            'id' => 3,
-            'name' => 'Carol Lee',
-            'username' => 'carol',
-            'email' => 'carol@example.com',
-            'password' => 'admin34567',
-            'permissions' => ['Read Only'],
-        ],
-    ];
+    // // Dummy data
+    // private $admin = [
+    //     [
+    //         'id' => 1,
+    //         'name' => 'Alice Smith',
+    //         'username' => 'alice',
+    //         'email' => 'alice@example.com',
+    //         'password' => 'admin12345',
+    //         'permissions' => ['View Users', 'Edit Products', 'Full Access', 'Edit Products', 'Full Access', 'Edit Products', 'Full Access'],
+    //     ],
+    //     [
+    //         'id' => 2,
+    //         'name' => 'Bob Johnson',
+    //         'username' => 'bob',
+    //         'email' => 'bob@example.com',
+    //         'password' => 'admin23456',
+    //         'permissions' => ['View Users', 'Limited Access'],
+    //     ],
+    //     [
+    //         'id' => 3,
+    //         'name' => 'Carol Lee',
+    //         'username' => 'carol',
+    //         'email' => 'carol@example.com',
+    //         'password' => 'admin34567',
+    //         'permissions' => ['Read Only'],
+    //     ],
+    // ];
 
     public function index()
     {
-        $admin = $this->admin;
-        return view('superadmin.admin.index', compact('admin'));
+        return redirect()->route('admin.index'); // Redirects to UsersController@adminList
     }
 
     public function show($id)

@@ -3,62 +3,62 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class UsersController extends Controller
 {
-    // Dummy user data with permissions
-    private $users = [
-        [
-            'id' => 1,
-            'role' => 'Admin',
-            'name' => 'Alice Smith',
-            'email' => 'alice@example.com',
-            'username' => 'alice',
-            'password' => 'admin12345',
-            'permissions' => ['View Users', 'Edit Products', 'Full Access'],
-        ],
-        [
-            'id' => 2,
-            'role' => 'Product Manager',
-            'name' => 'David Miller',
-            'email' => 'david@example.com',
-            'username' => 'david',
-            'password' => 'pm12345',
-            'permissions' => ['View Products', 'Assign Tasks'],
-        ],
-        [
-            'id' => 3,
-            'role' => 'User',
-            'name' => 'Eve Adams',
-            'email' => 'eve@example.com',
-            'username' => 'eve',
-            'password' => 'user12345',
-            'permissions' => ['Read Only'],
-        ],
-    ];
-
     public function index()
     {
-        $users = $this->users;
+        // Fetch all users from database with their roles
+        $users = User::with('roles')->get()->map(function($user) {
+            return [
+                'id' => $user->id,
+                'role' => $user->getRoleNames()->first() ?? 'No Role', // Get first role name
+                'name' => $user->name,
+                'email' => $user->email,
+                'username' => $user->email, // Using email as username since there's no username field
+                'permissions' => $user->getPermissionNames(), // Get all permissions
+                'created_at' => $user->created_at,
+            ];
+        });
+        
         return view('superadmin.users.index', compact('users'));
     }
 
     public function show($id)
     {
-        $user = collect($this->users)->firstWhere('id', $id);
-        if (!$user) {
-            abort(404);
-        }
-        return view('superadmin.users.show', compact('user'));
+        $user = User::with('roles', 'permissions')->findOrFail($id);
+        
+        // Format user data similar to the dummy structure for view compatibility
+        $userData = [
+            'id' => $user->id,
+            'role' => $user->getRoleNames()->first() ?? 'No Role',
+            'name' => $user->name,
+            'email' => $user->email,
+            'username' => $user->email,
+            'permissions' => $user->getPermissionNames(),
+            'created_at' => $user->created_at,
+        ];
+        
+        return view('superadmin.users.show', ['user' => $userData]);
     }
 
     public function edit($id)
     {
-        $user = collect($this->users)->firstWhere('id', $id);
-        if (!$user) {
-            abort(404);
-        }
-        return view('superadmin.users.edit', compact('user'));
+        $user = User::with('roles', 'permissions')->findOrFail($id);
+        
+        // Format user data similar to the dummy structure for view compatibility
+        $userData = [
+            'id' => $user->id,
+            'role' => $user->getRoleNames()->first() ?? 'No Role',
+            'name' => $user->name,
+            'email' => $user->email,
+            'username' => $user->email,
+            'password' => '', // Empty password field for security
+            'permissions' => $user->getPermissionNames(),
+        ];
+        
+        return view('superadmin.users.edit', ['user' => $userData]);
     }
 
     public function create()
@@ -66,46 +66,102 @@ class UsersController extends Controller
         return view('superadmin.users.create');
     }
 
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8',
+            'role' => 'required|string|exists:roles,name',
+        ]);
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+        ]);
+
+        // Assign role to user
+        $user->assignRole($request->role);
+
+        return redirect()->route('users.index')->with('success', 'User created successfully.');
+    }
+
+    public function update(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'role' => 'required|string|exists:roles,name',
+        ]);
+
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+        ]);
+
+        // Update password if provided
+        if ($request->filled('password')) {
+            $request->validate(['password' => 'min:8']);
+            $user->update(['password' => bcrypt($request->password)]);
+        }
+
+        // Update role
+        $user->syncRoles([$request->role]);
+
+        return redirect()->route('users.index')->with('success', 'User updated successfully.');
+    }
+
     public function destroy($id)
     {
-        // Dummy delete logic
-        return redirect()->route('user.index');
+        $user = User::findOrFail($id);
+        $user->delete();
+        
+        return redirect()->route('users.index')->with('success', 'User deleted successfully.');
     }
 
     public function adminList()
     {
         // Fetch all admins and their permissions
-        $admin = \App\Models\User::whereHas('roles', function($q) {
+        $admin = User::whereHas('roles', function($q) {
             $q->where('name', 'Admin');
         })->with('permissions')->get()->map(function($user) {
             return [
                 'id' => $user->id,
                 'name' => $user->name,
+                'email' => $user->email,
                 'permissions' => $user->getPermissionNames(),
+                'created_at' => $user->created_at,
             ];
         });
 
         return view('superadmin.admin.index', compact('admin'));
     }
+
     public function productManagerList()
     {
         // Fetch all product managers and their permissions
-        $prodman = \App\Models\User::whereHas('roles', function($q) {
+        $prodman = User::whereHas('roles', function($q) {
             $q->where('name', 'Product Manager');
         })->with('permissions')->get()->map(function($user) {
             return [
                 'id' => $user->id,
                 'name' => $user->name,
+                'email' => $user->email,
                 'permissions' => $user->getPermissionNames(),
+                'created_at' => $user->created_at,
             ];
         });
 
         return view('superadmin.productmanager.index', compact('prodman'));
     }
+
     public function showAdmin($id)
     {
-        // Fetch the admin user by ID (adjust as needed for your data source)
-        $admin = \App\Models\User::whereHas('roles', function($q) {
+        // Fetch the admin user by ID
+        $admin = User::whereHas('roles', function($q) {
             $q->where('name', 'Admin');
         })->where('id', $id)->with('permissions')->first();
 
@@ -115,32 +171,59 @@ class UsersController extends Controller
 
         return view('superadmin.admin.show', compact('admin'));
     }
+
     public function editAdmin($id)
     {
-        // Fetch the admin user by ID (adjust as needed for your data source)
-        $admin = collect($this->users)->firstWhere('id', $id);
-        if (!$admin || $admin['role'] !== 'Admin') {
+        // Fetch the admin user by ID from database
+        $admin = User::whereHas('roles', function($q) {
+            $q->where('name', 'Admin');
+        })->where('id', $id)->with('permissions')->first();
+        
+        if (!$admin) {
             abort(404);
         }
-        return view('superadmin.admin.edit', compact('admin'));
+        
+        // Format admin data for view compatibility
+        $adminData = [
+            'id' => $admin->id,
+            'name' => $admin->name,
+            'email' => $admin->email,
+            'username' => $admin->email,
+            'password' => '', // Empty password field for security
+            'permissions' => $admin->getPermissionNames(),
+        ];
+        
+        return view('superadmin.admin.edit', ['admin' => $adminData]);
     }
+
     public function destroyAdmin($id)
     {
-        // Add your delete logic here (dummy or real)
-        // For dummy data, just redirect back for now
+        $admin = User::whereHas('roles', function($q) {
+            $q->where('name', 'Admin');
+        })->where('id', $id)->first();
+        
+        if (!$admin) {
+            abort(404);
+        }
+        
+        $admin->delete();
+        
         return redirect()->route('admin.index')->with('success', 'Admin deleted successfully.');
     }
+
     public function createAdmin()
     {
         return view('superadmin.admin.create');
     }
+
     public function createProductManager()
     {
         return view('superadmin.productmanager.create');
     }
+
     public function showProductManager($id)
     {
-        $prodman = \App\Models\User::whereHas('roles', function($q) {
+        $prodman = User::whereHas('roles', function($q) {
             $q->where('name', 'Product Manager');
         })->where('id', $id)->with('permissions')->first();
 
@@ -150,22 +233,42 @@ class UsersController extends Controller
 
         return view('superadmin.productmanager.show', compact('prodman'));
     }
+
     public function editProductManager($id)
     {
-        $prodman = \App\Models\User::whereHas('roles', function($q) {
+        $prodman = User::whereHas('roles', function($q) {
             $q->where('name', 'Product Manager');
         })->where('id', $id)->with('permissions')->first();
 
         if (!$prodman) {
             abort(404);
         }
+        
+        // Format product manager data for view compatibility
+        $prodmanData = [
+            'id' => $prodman->id,
+            'name' => $prodman->name,
+            'email' => $prodman->email,
+            'username' => $prodman->email,
+            'password' => '', // Empty password field for security
+            'permissions' => $prodman->getPermissionNames(),
+        ];
 
-        return view('superadmin.productmanager.edit', compact('prodman'));
+        return view('superadmin.productmanager.edit', ['prodman' => $prodmanData]);
     }
+
     public function destroyProductManager($id)
     {
-        // Add your delete logic here (dummy or real)
-        // For now, just redirect back for demonstration
+        $prodman = User::whereHas('roles', function($q) {
+            $q->where('name', 'Product Manager');
+        })->where('id', $id)->first();
+        
+        if (!$prodman) {
+            abort(404);
+        }
+        
+        $prodman->delete();
+        
         return redirect()->route('productmanager.index')->with('success', 'Product Manager deleted successfully.');
     }
 }
