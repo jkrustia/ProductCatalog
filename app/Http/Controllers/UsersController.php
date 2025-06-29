@@ -9,19 +9,17 @@ class UsersController extends Controller
 {
     public function index()
     {
-        // Fetch all users from database with their roles
-        $users = User::with('roles')->get()->map(function($user) {
+        $users = User::with('roles', 'permissions')->get()->map(function($user) {
             return [
                 'id' => $user->id,
-                'role' => $user->getRoleNames()->first() ?? 'No Role', // Get first role name
                 'name' => $user->name,
                 'email' => $user->email,
-                'username' => $user->email, // Using email as username since there's no username field
-                'permissions' => $user->getPermissionNames()->toArray(), // Convert to array for blade compatibility
-                'created_at' => $user->created_at,
+                'role' => $user->getRoleNames()->first() ?? 'No Role',
+                // Get permission names as array of strings
+                'permissions' => $user->getAllPermissions()->pluck('name')->toArray(),
             ];
-        })->toArray(); // Convert collection to array for blade compatibility
-        
+        });
+
         return view('superadmin.users.index', compact('users'));
     }
 
@@ -36,7 +34,7 @@ class UsersController extends Controller
             'name' => $user->name,
             'email' => $user->email,
             'username' => $user->email,
-            'permissions' => $user->getPermissionNames()->toArray(), // Convert to array
+            'permissions' => $user->getAllPermissions()->pluck('name')->toArray(), // Convert to array
             'created_at' => $user->created_at,
         ];
         
@@ -55,7 +53,7 @@ class UsersController extends Controller
             'username' => $user->email,
             'role' => $user->getRoleNames()->first() ?? 'No Role', // Add role for edit form
             'password' => '', // Empty password field for security
-            'permissions' => $user->getPermissionNames()->toArray(), // Convert to array
+            'permissions' => $user->getAllPermissions()->pluck('name')->toArray(), // Convert to array
         ];
         
         return view('superadmin.users.edit', ['user' => $userData]);
@@ -134,7 +132,7 @@ class UsersController extends Controller
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
-                'permissions' => $user->getPermissionNames()->toArray(), // Convert to array
+                'permissions' => $user->getAllPermissions()->pluck('name')->toArray(), // Convert to array
                 'created_at' => $user->created_at,
             ];
         })->toArray(); // Convert collection to array
@@ -152,7 +150,7 @@ class UsersController extends Controller
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
-                'permissions' => $user->getPermissionNames()->toArray(), // Convert to array
+                'permissions' => $user->getAllPermissions()->pluck('name')->toArray(), // Convert to array
                 'created_at' => $user->created_at,
             ];
         })->toArray(); // Convert collection to array
@@ -178,7 +176,7 @@ class UsersController extends Controller
             'email' => $admin->email,
             'username' => $admin->email,
             'role' => 'Admin',
-            'permissions' => $admin->getPermissionNames()->toArray(),
+            'permissions' => $admin->getAllPermissions()->pluck('name')->toArray(),
             'created_at' => $admin->created_at,
         ];
 
@@ -204,7 +202,7 @@ class UsersController extends Controller
             'username' => $admin->email,
             'role' => 'Admin',
             'password' => '', // Empty password field for security
-            'permissions' => $admin->getPermissionNames()->toArray(), // Convert to array
+            'permissions' => $admin->getAllPermissions()->pluck('name')->toArray(), // Convert to array
         ];
         
         return view('superadmin.admin.edit', ['admin' => $adminData]);
@@ -327,7 +325,7 @@ class UsersController extends Controller
             'email' => $prodman->email,
             'username' => $prodman->email,
             'role' => 'Product Manager',
-            'permissions' => $prodman->getPermissionNames()->toArray(),
+            'permissions' => $prodman->getAllPermissions()->pluck('name')->toArray(),
             'created_at' => $prodman->created_at,
         ];
 
@@ -352,7 +350,7 @@ class UsersController extends Controller
             'username' => $prodman->email,
             'role' => 'Product Manager',
             'password' => '', // Empty password field for security
-            'permissions' => $prodman->getPermissionNames()->toArray(), // Convert to array
+            'permissions' => $prodman->getAllPermissions()->pluck('name')->toArray(), // Convert to array
         ];
 
         return view('superadmin.productmanager.edit', ['prodman' => $prodmanData]);

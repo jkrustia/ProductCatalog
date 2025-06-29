@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Role; 
+use Spatie\Permission\Models\Role as SpatieRole;
+
 class RoleController extends Controller
 {
     public function index()
@@ -80,4 +82,9 @@ class RoleController extends Controller
         // Logic to delete a role
     }
     
+    public function assignPermissionToAdmin()
+    {
+        $role = SpatieRole::findByName('Admin');
+        $role->givePermissionTo('edit articles'); // replace with your permission name
+    }
 }
