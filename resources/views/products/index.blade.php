@@ -98,16 +98,16 @@
                         <div class="mb-3">
                             <div class="fw-bold mb-1">Category</div>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="category[]" value="Dog"
+                                <input class="form-check-input" type="checkbox" name="category[]" value="Dog Supplies"
                                     id="dogSupplies"
                                     {{ in_array('Dog', request('category', [])) ? 'checked' : '' }}>
-                                <label class="form-check-label" for="dogSupplies">Dog</label>
+                                <label class="form-check-label" for="dogSupplies">Dog Supplies</label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="category[]" value="Cat"
+                                <input class="form-check-input" type="checkbox" name="category[]" value="Cat Supplies"
                                     id="catSupplies"
                                     {{ in_array('Cat', request('category', [])) ? 'checked' : '' }}>
-                                <label class="form-check-label" for="catSupplies">Cat</label>
+                                <label class="form-check-label" for="catSupplies">Cat Supplies</label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" name="category[]" value="Other Pets"
