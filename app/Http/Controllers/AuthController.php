@@ -3,18 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User; // Import User model
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth; // Import Auth facade
-use Spatie\Permission\Models\Role; // Import Spatie Role model
+use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Models\Role;
 
 class AuthController extends Controller
 {
 
     public function showLoginForm()
     {
-        // Render the login form view
-        return view('auth.login');
+        // Change this line:
+        return view('auth.login'); // Now points directly to resources/views/login.blade.php
     }
 
     public function login (Request $request)
@@ -24,31 +24,34 @@ class AuthController extends Controller
             'password' => 'required|min:6',
         ]);
 
-        // Attempt to log the user in using email
         if (Auth::attempt($request->only('email', 'password'))) {
-            $role = Auth::user()->getRoleNames()->first(); // Get user role
+            $request->session()->regenerate();
+
+            $role = Auth::user()->getRoleNames()->first();
 
             switch ($role) {
                 case 'Super Admin':
                     return redirect()->route('superadmin.dashboard');
                 case 'Product Manager':
+                    // Original code used 'pm.dashboard', changed to 'productmanager.dashboard' based on web.php
                     return redirect()->route('pm.dashboard');
                 case 'Admin':
                     return redirect()->route('admin.dashboard');
                 default:
-                    return redirect('/home'); // Default redirect
+                    // Redirect to the new 'home' route for authenticated users
+                    return redirect()->route('home');
             }
         }
 
-        // If login fails, redirect back with an error message
         return back()->withErrors([
             'email' => 'Invalid credentials provided.',
-        ]);
+        ])->onlyInput('email');
     }
 
     public function showRegistrationForm()
     {
-        return view('auth.signup'); // Or 'auth.register' if you named the file that way
+        // Change this line:
+        return view('auth.signup'); // Now points directly to resources/views/signup.blade.php
     }
 
     public function register(Request $request)
@@ -65,18 +68,13 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        // Assign the default 'User' role to the newly registered user
-        $userRole = Role::where('name', 'User')->first(); //
-        if ($userRole) { //
-            $user->assignRole($userRole); //
-        } else { //
-            // Handle case where 'User' role does not exist (e.g., log error or create it)
-            // For now, let's assume it exists or will be created by a seeder.
+        $userRole = Role::where('name', 'User')->first();
+        if ($userRole) {
+            $user->assignRole($userRole);
         }
 
-        Auth::login($user); // Log in the new user
+        Auth::login($user);
 
-        // Redirect to a default page or a user-specific dashboard
         return redirect()->route('home')->with('success', 'Registration successful! Welcome.');
     }
 
@@ -85,6 +83,7 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect('/');
+        // Redirect to the guest landing page after logout
+        return redirect()->route('welcome');
     }
 }

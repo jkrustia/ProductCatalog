@@ -14,11 +14,18 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg">
+    <nav class="d-nav navbar navbar-expand-lg">
         <div class="container">
             @include('partials._brand')
-            <div class="d-flex">
-                <a href="{{ route('login') }}">Sign In</a>
+            <div class="d-flex align-items-center">
+                {{-- User-specific navigation or display --}}
+                <p class="username text-center fw-bold me-3">
+                    Welcome, {{ Auth::user()->name }}! {{-- This will definitely be the user's name as this is for authenticated users --}}
+                </p>
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="d-block me-2">Logout</button>
+                </form>
             </div>
         </div>
     </nav>
@@ -69,7 +76,7 @@
             </div>
         </div>
     </section>
-    <section class="container-fluid mt-4 pb-5 featured text-center" id="featured-products">
+    <section class="container-fluid mt-4 pb-5 featured text-center">
         <div class="row justify-content-center">
             <h2 class="mt-4">Featured <span class="d-block">Products</span></h2>
             <div class="col-8 card g-4">

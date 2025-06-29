@@ -20,7 +20,7 @@
             @include('partials._brand')
             <div class="d-flex align-items-center">
                 
-                <form action="{{ route('auth.logout') }}" method="POST">
+                <form action="{{ route('logout') }}" method="POST">
                     @csrf
                     <button type="submit" class="d-block me-4">Sign Out</button>
                 </form>

@@ -17,210 +17,198 @@ use App\Http\Controllers\PermissionController;
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are all loaded by the RouteServiceProvider and all of them will
+| be assigned to the "web" middleware group. Make something great!
+|
 */
 
-Route::get('/', function () {
-    return view('home');
-})->name('home');
+// =========================================
+// PUBLIC ROUTES (No Authentication Required)
+// =========================================
 
+// Guest Home Page (accessible to everyone)
+// This route handles the public landing page.
+// If a user is logged in and tries to access '/', they will be redirected to their authenticated home.
 Route::get('/', function () {
-    return view('home');
-})->name('home');
+    if (Auth::check()) {
+        return redirect()->route('home'); // Redirect to authenticated user's home
+    }
+    return view('home'); // points to resources/views/home.blade.php for guests
+})->name('welcome'); // Main welcome route for guests
 
-// Authentication Routes
+// Alternative home route (for compatibility)
+Route::get('/home-public', function () {
+    return view('home');
+})->name('home.public');
+
+// =========================================
+// AUTHENTICATION ROUTES
+// =========================================
+
+// Login Routes
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// New Registration Routes
+// Registration Routes
 Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [AuthController::class, 'register']);
 
+// Logout Route
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::post('/auth/logout', [AuthController::class, 'logout'])->name('auth.logout'); // Alternative logout route
+
+// =========================================
+// TEST/DEMO ROUTES
+// =========================================
+
+// Test Role Middleware Route (for demonstration/testing purposes)
 Route::get('/test-role', function () {
     return 'Role middleware works!';
 })->middleware('role:Super Admin');
-// // Product Catalog Application Routes
-// Implement Role-Based Access Control (RBAC) using Spatie Laravel Permission Middleware
-// Roles: Superadmin, Admin, Product Manager
+
+// =========================================
+// AUTHENTICATED USER ROUTES
 // =========================================
 
-// 1. **Authentication**:
-// - Routes for login and logout for both Admin and Product Manager.
-// - Redirect users to their respective dashboards after login.
-// - Logout should clear the session.
-Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login'); // Add this line
-//Route::get('/login', [AuthController::class, 'showLoginForm'])->name('auth.login');
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
-Route::get('/dashboard/admin', [DashboardController::class, 'adminDashboard'])->name('admin.dashboard')->middleware(['auth', 'role:Admin']);
-Route::get('/dashboard/pm', [DashboardController::class, 'pmDashboard'])->name('pm.dashboard')->middleware(['auth', 'role:Product Manager']);
-
-
-// Authentication routes
-
-// 2. **Role-Based Access Control (RBAC)**:
-// - Superadmin: Access to all routes for managing users, roles, permissions, and system settings.
-// - Admin: Full access to product, pricing, category, inventory, and settings management.
-// - Product Manager: Access limited to product and inventory management (cannot access pricing or financials).
-// - Use Spatie Laravel Permission Middleware to enforce these roles and permissions.
-Route::group(['middleware' => ['auth', 'role:Super Admin']], function () {
-    Route::resource('users', UsersController::class);
-    Route::resource('roles', RoleController::class);
-    Route::resource('permissions', PermissionController::class);
-    Route::get('/superadmin/admins', [UsersController::class, 'adminList'])->name('admin.index');
-    Route::get('/superadmin/productmanagers', [UsersController::class, 'productManagerList'])->name('productmanager.index');
-    Route::get('/superadmin/admins/{id}', [UsersController::class, 'showAdmin'])->name('admin.show');
-    Route::get('/superadmin/admins/{id}/edit', [UsersController::class, 'editAdmin'])->name('admin.edit');
-    Route::delete('/superadmin/admins/{id}', [UsersController::class, 'destroyAdmin'])->name('admin.destroy');
-    Route::get('/superadmin/admins/create', [UsersController::class, 'createAdmin'])->name('admin.create');
-    Route::get('/superadmin/productmanagers/create', [UsersController::class, 'createProductManager'])->name('productmanager.create');
-    Route::get('/superadmin/productmanagers/{id}', [UsersController::class, 'showProductManager'])->name('productmanager.show');
-    Route::get('/superadmin/productmanagers/{id}/edit', [UsersController::class, 'editProductManager'])->name('productmanager.edit');
-    Route::delete('/superadmin/productmanagers/{id}', [UsersController::class, 'destroyProductManager'])->name('productmanager.destroy');
-});
-
-Route::group(['middleware' => ['auth', 'role:Product Manager']], function () {
-    Route::resource('products', ProductController::class)->only(['index','create', 'store', 'edit', 'update']);
-    Route::resource('inventory', InventoryController::class)->only(['index', 'edit', 'update']);
-    
-});
-
-// 3. **Admin Routes** (Full Access):
-// - Manage products (add, update, delete, view).
-// - Manage categories (add, update, delete, view).
-// - Manage inventory (view and update inventory).
-// - Manage pricing (add and update product prices).
-// - Access dashboard and reports.
-
-Route::group(['middleware' => ['auth', 'role:Admin']], function () {
-    Route::resource('products', ProductController::class);
-    Route::resource('categories', CategoriesController::class);
-    Route::resource('inventory', InventoryController::class);
-    Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-});
-
-
-// Admin routes
-Route::group(['middleware' => ['auth', 'role:Admin']], function () {
-    // Admin dashboard
-    Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard'); 
-    // User management
-    Route::resource('users', UsersController::class)->except(['show']);
-    // View users, create new users, edit existing users, and update user details.
-    Route::get('/users', [UsersController::class, 'index'])->name('users.index');
-    Route::get('/users/create', [UsersController::class, 'create'])->name('users.create');
-    Route::post('/users', [UsersController::class, 'store'])->name('users.store');
-    Route::get('/users/{user}/edit', [UsersController::class, 'edit'])->name('users.edit');
-    Route::put('/users/{user}', [UsersController::class, 'update'])->name('users.update');
-    Route::delete('/users/{user}', [UsersController::class, 'destroy'])->name('users.destroy'); 
-
-    // Product management
-    Route::resource('products', ProductController::class)->except(['destroy']);
-    // View products, create new products, edit existing products, and update product details.
-    Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-    Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
-    Route::post('/products', [ProductController::class, 'store'])->name('products.store');
-    Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
-
-});
-    //
-    // 
-    //  Assign products to categories
-    Route::post('/products/{product}/assign-category', [ProductController::class, 'assignCategory'])->name('products.assignCategory');
-    Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
-    Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
-    
-
-
-    // Category management
-    Route::resource('categories', CategoriesController::class)->except(['destroy']);
-    Route::get('/categories', [CategoriesController::class, 'index'])->name('categories.index');
-    Route::get('/categories/create', [CategoriesController::class, 'create'])->name('categories.create');
-    Route::post('/categories', [CategoriesController::class, 'store'])->name('categories.store');
-    Route::get('/categories/{category}/edit', [CategoriesController::class, 'edit'])->name('categories.edit');
-    Route::put('/categories/{category}', [CategoriesController::class, 'update'])->name('categories.update');
-    Route::delete('/categories/{category}', [CategoriesController::class, 'destroy'])->name('categories.destroy');
-
-    // Inventory management
-    Route::resource('inventory', InventoryController::class)->except(['destroy']);
-    Route::get('/inventory', [InventoryController::class, 'index'])->name('inventory.index');
-    Route::get('/inventory/{product}/edit', [InventoryController::class, 'edit'])->name('inventory.edit');
-    Route::put('/inventory/{product}', [InventoryController::class, 'update'])->name('inventory.update');
-    Route::get('/inventory/stock-status', [InventoryController::class, 'stockStatus'])->name('inventory.stockStatus');
-
-    
-
-   
-
-// 4. **Product Manager Routes** (Limited Access):
-// - Manage products (add and edit only).
-// - View and update inventory.
-// - No access to pricing or categories.
-
-
-// Product Manager routes
-Route::group(['middleware' => ['auth', 'role:Product Manager']], function () {
-    Route::resource('products', ProductController::class)->only(['index', 'create', 'store', 'edit', 'update']);
-    Route::resource('inventory', InventoryController::class)->only(['index', 'edit', 'update']);
-    Route::get('/pm/dashboard', [ProjManController::class, 'dashboard'])->name('pm.dashboard');
-    
-});
-
-
-// 5. **General Requirements**:
-// - Stock status display: Display "In Stock", "Low Stock", or "Out of Stock" based on inventory levels.
-// - Define a route for inventory stock status.
-Route::resource('prices', PriceController::class)->except(['destroy']);
-Route::get('/inventory/stock-status', [InventoryController::class, 'stockStatus'])->name('inventory.stockStatus');
-
-// - Use a middleware to check user roles and permissions for accessing specific routes.            
 Route::middleware(['auth'])->group(function () {
-    Route::get('/inventory/stock-status', [InventoryController::class, 'stockStatus'])->name('inventory.stockStatus');
-});
-// - Implement a method in the InventoryController to check stock levels and return appropriate status.
-Route::get('/inventory/stock-status', [InventoryController::class, 'stockStatus'])->name('inventory.stockStatus');
 
+    // =========================================
+    // GENERAL AUTHENTICATED USER HOME
+    // =========================================
+    
+    // Authenticated User's Home Page
+    Route::get('/home', function () {
+        return view('user.home'); // points to resources/views/user/home.blade.php
+    })->name('home');
 
-// 6. **Superadmin Routes**:
-// - Manage users, roles, and permissions.
-// - Access to all system settings (Superadmin only).
+    // General Dashboard (with role-based redirection)
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-// Superadmin routes
-// This group of routes is protected by the 'auth' middleware and restricted to users with the 'Super Admin' role.
-// It allows Super Admins to manage users, roles, permissions, and access the superadmin dashboard.
-Route::group(['middleware' => ['auth', 'role:Super Admin']], function () {  
+    // =========================================
+    // SUPER ADMIN ROUTES
+    // =========================================
+    
+    Route::group(['middleware' => ['role:Super Admin']], function () {
+        // Super Admin Dashboard
+        Route::get('/superadmin/dashboard', function () {
+            return view('superadmin.index');
+        })->name('superadmin.dashboard');
+
+        // User Management (Full CRUD)
+        Route::resource('users', UsersController::class);
+        
+        // Admin Management
+        Route::get('/superadmin/admins', [UsersController::class, 'adminList'])->name('admin.index');
+        Route::get('/superadmin/admins/create', [UsersController::class, 'createAdmin'])->name('admin.create');
+        Route::get('/superadmin/admins/{id}', [UsersController::class, 'showAdmin'])->name('admin.show');
+        Route::get('/superadmin/admins/{id}/edit', [UsersController::class, 'editAdmin'])->name('admin.edit');
+        Route::delete('/superadmin/admins/{id}', [UsersController::class, 'destroyAdmin'])->name('admin.destroy');
+        
+        // Product Manager Management
+        Route::get('/superadmin/productmanagers', [UsersController::class, 'productManagerList'])->name('productmanager.index');
+        Route::get('/superadmin/productmanagers/create', [UsersController::class, 'createProductManager'])->name('productmanager.create');
+        Route::get('/superadmin/productmanagers/{id}', [UsersController::class, 'showProductManager'])->name('productmanager.show');
+        Route::get('/superadmin/productmanagers/{id}/edit', [UsersController::class, 'editProductManager'])->name('productmanager.edit');
+        Route::delete('/superadmin/productmanagers/{id}', [UsersController::class, 'destroyProductManager'])->name('productmanager.destroy');
+
+        // Role and Permission Management
+        Route::resource('roles', RoleController::class);
+        Route::resource('permissions', PermissionController::class);
+    });
+
+    // =========================================
+    // ADMIN ROUTES (Full Access)
+    // =========================================
+    
+    Route::group(['middleware' => ['role:Admin']], function () {
+        // Admin Dashboard
+        Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+        
+        // Alternative admin dashboard route
+        Route::get('/dashboard/admin', [DashboardController::class, 'adminDashboard'])->name('admin.dashboard.alt');
+
+        // User Management (except show)
+        Route::resource('users', UsersController::class)->except(['show']);
+        Route::get('/users', [UsersController::class, 'index'])->name('users.index.admin');
+        Route::get('/users/create', [UsersController::class, 'create'])->name('users.create.admin');
+        Route::post('/users', [UsersController::class, 'store'])->name('users.store.admin');
+        Route::get('/users/{user}/edit', [UsersController::class, 'edit'])->name('users.edit.admin');
+        Route::put('/users/{user}', [UsersController::class, 'update'])->name('users.update.admin');
+        Route::delete('/users/{user}', [UsersController::class, 'destroy'])->name('users.destroy.admin');
+
+        // Product Management (Full CRUD)
+        Route::resource('products', ProductController::class);
+        
+        // Additional product routes
+        Route::post('/products/{product}/assign-category', [ProductController::class, 'assignCategory'])->name('products.assignCategory');
+
+        // Category Management (Full CRUD)
+        Route::resource('categories', CategoriesController::class);
+
+        // Inventory Management
+        Route::resource('inventory', InventoryController::class);
+        Route::get('/inventory/stock-status', [InventoryController::class, 'stockStatus'])->name('inventory.stockStatus');
+        
+        // Price Management
+        Route::resource('prices', PriceController::class)->except(['destroy']);
+    });
+
+    // =========================================
+    // PRODUCT MANAGER ROUTES (Limited Access)
+    // =========================================
+    
+    Route::group(['middleware' => ['role:Product Manager']], function () {
+        // Primary Product Manager Dashboard (matches AuthController expectation)
+        Route::get('/pm/dashboard', [ProjManController::class, 'dashboard'])->name('pm.dashboard');
+        
+        // Alternative PM dashboard routes
+        Route::get('/productmanager/dashboard', function () {
+            return view('productmanager.dashboard');
+        })->name('productmanager.dashboard');
+        Route::get('/dashboard/pm', [DashboardController::class, 'pmDashboard'])->name('pm.dashboard.alt');
+
+        // Product Management (Limited - no delete)
+        Route::resource('products', ProductController::class)->only(['index', 'create', 'store', 'edit', 'update']);
+
+        // Inventory Management (Limited - view and edit only)
+        Route::resource('inventory', InventoryController::class)->only(['index', 'edit', 'update']);
+    });
+
+    // =========================================
+    // SHARED AUTHENTICATED ROUTES
+    // (Accessible by multiple roles - specific permissions handled in controllers)
+    // =========================================
+    
+    // General resource routes (access controlled within controllers)
+    Route::resource('products', ProductController::class);
+    Route::resource('inventory', InventoryController::class);
+    Route::resource('categories', CategoriesController::class);
     Route::resource('users', UsersController::class);
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class);
-    Route::get('/superadmin/dashboard', function () {
-        return view('superadmin.index');
-    })->name('superadmin.dashboard');
-});
 
-// Admin dashboard
-Route::group(['middleware' => ['auth', 'role:Admin']], function () {
+    // =========================================
+    // INVENTORY SPECIFIC ROUTES
+    // =========================================
+    
+    // Stock Status Route (accessible by authenticated users)
+    Route::get('/inventory/stock-status', [InventoryController::class, 'stockStatus'])->name('inventory.stockStatus');
+    
+    // Bulk Update Route
+    Route::post('/inventory/bulk-update', [InventoryController::class, 'bulkUpdate'])->name('inventory.bulkUpdate');
+
+    // =========================================
+    // DASHBOARD ROUTES (Role-based redirection handled in controller)
+    // =========================================
+    
+    // Individual dashboard routes for each role
     Route::get('/admin/dashboard', function () {
         return view('admin.dashboard');
-    })->name('admin.dashboard');
-});
+    })->name('admin.dashboard.view');
 
-// Product Manager dashboard
-Route::group(['middleware' => ['auth', 'role:Product Manager']], function () {
     Route::get('/productmanager/dashboard', function () {
         return view('productmanager.dashboard');
-    })->name('productmanager.dashboard');
+    })->name('productmanager.dashboard.view');
 });
-
-Route::middleware(['auth'])->group(function () {
-    Route::resource('products', ProductController::class);
-    Route::resource('inventory', InventoryController::class);
-    Route::resource('categories', CategoriesController::class);
-    Route::resource('users', UsersController::class);
-    Route::resource('roles', RoleController::class);
-    Route::resource('permissions', PermissionController::class);
-});
-Route::post('/inventory/bulk-update', [InventoryController::class, 'bulkUpdate'])->name('inventory.bulkUpdate');
-
-
-
