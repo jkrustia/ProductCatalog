@@ -41,13 +41,7 @@
                         @enderror
                     </div>
                     
-                    <div class="mb-2 d-flex align-items-center">
-                        <span class="tamad-baloo fw-bold" style="font-size: 1rem;">Username:</span>
-                        <input type="text" class="form-control tamad-nunito ms-2 d-inline-block"
-                            style="width: auto; min-width: 120px;" id="username" name="username"
-                            value="{{ old('username', $user['username']) }}">
-                        <small class="text-muted ms-2">Optional</small>
-                    </div>
+                    
                     
                     <div class="mb-2 d-flex align-items-center">
                         <span class="tamad-baloo fw-bold" style="font-size: 1rem;">Password:</span>
@@ -104,14 +98,14 @@
             'Super Admin': ['full-access', 'manage-all-users', 'manage-settings'],
             'Admin': ['create-product', 'edit-product', 'delete-product', 'view-users', 'edit-users'],
             'Product Manager': ['create-product', 'edit-product', 'view-users', 'assign-tasks'],
-            'User': ['view-products', 'view-tasks']
+            //'User': ['view-products', 'view-tasks']
         };
 
         const roleColors = {
             'Super Admin': '#28a745', // Green
             'Admin': '#007bff',      // Blue
             'Product Manager': '#fd7e14', // Orange
-            'User': '#ffc107',       // Yellow
+            //'User': '#ffc107',       // Yellow
         };
         
         const roleSelect = document.getElementById('role');

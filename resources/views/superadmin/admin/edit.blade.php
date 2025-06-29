@@ -30,15 +30,7 @@
                         @enderror
                     </div>
                     
-                    <div class="mb-2 d-flex align-items-center">
-                        <span class="tamad-baloo fw-bold" style="font-size: 1rem;">Username:</span>
-                        <input type="text" class="form-control tamad-nunito ms-2 d-inline-block @error('username') is-invalid @enderror"
-                            style="width: auto; min-width: 120px;" id="username" name="username"
-                            value="{{ old('username', $admin['username']) }}">
-                        @error('username')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
+                    
                     
                     <div class="mb-2 d-flex align-items-center">
                         <span class="tamad-baloo fw-bold" style="font-size: 1rem;">Password:</span>

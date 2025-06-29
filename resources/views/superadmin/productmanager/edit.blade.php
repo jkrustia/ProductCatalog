@@ -34,12 +34,7 @@
                             style="width: auto; min-width: 180px;" id="email" name="email"
                             value="{{ old('email', $prodman['email']) }}" required>
                     </div>
-                    <div class="mb-2 d-flex align-items-center">
-                        <span class="tamad-baloo fw-bold" style="font-size: 1rem;">Username:</span>
-                        <input type="text" class="form-control tamad-nunito ms-2 d-inline-block"
-                            style="width: auto; min-width: 120px;" id="username" name="username"
-                            value="{{ old('username', $prodman['username']) }}">
-                    </div>
+                    
                     <div class="mb-2 d-flex align-items-center">
                         <span class="tamad-baloo fw-bold" style="font-size: 1rem;">Password:</span>
                         <input type="password" class="form-control tamad-nunito ms-2 d-inline-block"
