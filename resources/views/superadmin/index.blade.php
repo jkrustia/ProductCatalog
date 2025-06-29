@@ -3,6 +3,7 @@
 @section('title', 'Dashboard')
 
 @section('content')
+    <h2><br>&nbsp;&nbsp;&nbsp;Welcome, {{ Auth::user()->name }}!</h2>
     <section class="container sa-overview">
         <h1>SuperAdmin</h1>
         <a class="ms-1" href="{{ route('users.index') }}">
